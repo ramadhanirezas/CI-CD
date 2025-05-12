@@ -1,0 +1,29 @@
+name: .NET CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '7.0.201'
+
+    - name: Restore dependencies
+      run: dotnet restore kalkulator.sln  
+
+    - name: Build the solution
+      run: dotnet build kalkulator.sln --no-restore  
+
+    - name: Run tests
+      run: dotnet test kalkulator.sln --no-build --verbosity normal 
